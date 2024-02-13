@@ -55,4 +55,50 @@ class Team extends Model
 }
 
 
+### Seed Admin User
+extend user tho..
+php artisan make:migration update_user_table --table=users
+add role
+     Schema::table('users', function (Blueprint $table) {
+            $table->string('role')->default('user');
+        });
+
+php artisan make:seeder AdminsTableSeeder
+php artisan db:seed --class=AdminsTableSeeder
+
+       DB::table('users')->insert([
+            'name' => 'Admin',
+            'email' => 'admin@admin.com',
+            'password' => Hash::make('password'),
+            'role' => 'admin',
+        ]);
+        -   dont forget imports Hash, DB
+
+
+### Addd middleware
+php artisan make:middleware IsAdminMiddleware
+
+        if (auth()->user() && auth()->user()->is_admin) {
+            return $next($request);
+        }
+
+        // Redirect non-admins somewhere else or abort
+        return redirect('/')->with('error', 'You do not have access to this section.');
+
+        In our case we use this snippet below not the one above
+
+                // Check if logged in and role is admin
+        if (auth()->check() && auth()->user()->role === 'admin') {
+            return $next($request);
+        }
+
+        // Redirect or abort for non-admin users
+        return redirect('/')->with('error', 'You do not have access to this section.')
+
+
+app/Http/Kernel.php
+add ub middlewareAlliases ⬇️
+    protected $middlewareAliases = [
+        'is_admin' => \App\Http\Middleware\IsAdminMiddleware::class,
+
 
