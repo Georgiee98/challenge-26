@@ -18,8 +18,7 @@ class AdminsTableSeeder extends Seeder
             'name' => 'Admin',
             'email' => 'admin@admin.com',
             'password' => Hash::make('password'),
-            // Add a role or is_admin column to differentiate administrators
-            'is_admin' => true,
+            'role' => 'admin',
         ]);
     }
 }
