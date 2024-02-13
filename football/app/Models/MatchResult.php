@@ -12,7 +12,7 @@ class MatchResult extends Model
 
     protected $fillable = ['match_id', 'team1_score', 'team2_score'];
 
-    public function match()
+    public function footballMatch()
     {
         return $this->belongsTo(FootballMatch::class);
     }
